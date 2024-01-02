@@ -1,0 +1,14 @@
+name: GitHub Api Boilerplate
+run-name: GO API Boilerplate
+on:
+  [push]
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set Env variable
+        run: echo "USERNAME=${{ github.actor }}" >> $GITHUB_ENV
+      - name: Run test
+        run: cd src/ && go test -cover ./...
