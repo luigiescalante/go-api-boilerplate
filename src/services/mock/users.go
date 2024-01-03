@@ -1,8 +1,8 @@
 package mock
 
 import (
-	"cicada-challenge/models"
 	"github.com/stretchr/testify/mock"
+	"go.api-boilerplate/models"
 )
 
 type UsersRepoMock struct {
