@@ -1,4 +1,4 @@
-name: GitHub Api Boilerplate
+name: GitHub Api Boilerplate CI/CD
 run-name: GO API Boilerplate
 on:
   [push]
@@ -8,7 +8,19 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Set Env variable
-        run: echo "USERNAME=${{ github.actor }}" >> $GITHUB_ENV
       - name: Run test
         run: cd src/ && go test -cover ./...
+      - name: Login to AWS ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+        with:
+            registry: 220361521127.dkr.ecr.us-east-1.amazonaws.com
+            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: Build and tag Docker image
+        run: |
+          docker build -t my-docker-image .
+          docker tag go-api-boilerplate:latest 220361521127.dkr.ecr.us-east-1.amazonaws.com/go-api-boilerplate:latest
+      - name: Push Docker image to AWS ECR
+        run: |
+          docker push 220361521127.dkr.ecr.us-east-1.amazonaws.com/go-api-boilerplate:latest
