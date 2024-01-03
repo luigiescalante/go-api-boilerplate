@@ -1,26 +1,24 @@
-name: GitHub Api Boilerplate CI/CD
-run-name: GO API Boilerplate
+name: GitHub Api Boilerplate (Production)
+run-name: GO API Boilerplate (Production)
 on:
-  [push]
+  push:
+    branches:
+      - main
 jobs:
-  ci:
+  ci-production:
     runs-on: ubuntu-latest
     environment: production
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      #- name: Run test
-      #  run: cd src/ && go test -cover ./...
+      - name: Run test
+        run: cd src/ && go test -cover ./...
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
-        env:
-            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-            aws-region: us-east-1
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
