@@ -1,9 +1,9 @@
 name: GitHub Api Boilerplate (Production)
 run-name: GO API Boilerplate (Production)
-on: [push]
-  #push:
-    #branches:
-     # - main
+on:
+  push:
+    branches:
+      - main
 jobs:
   ci-production:
     runs-on: ubuntu-latest
@@ -18,21 +18,21 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+          aws-region: ${{ secrets.AWS_REGION }}
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
       - name: Build and tag Docker image
         run: |
           docker build -t my-docker-image .
-          docker tag my-docker-image:latest 220361521127.dkr.ecr.us-east-1.amazonaws.com/go-api-boilerplate:latest
+          docker tag my-docker-image:latest ${{ secrets.AWS_ECR_IMAGE }}
       - name: Push Docker image to AWS ECR
         run: |
-          docker push 220361521127.dkr.ecr.us-east-1.amazonaws.com/go-api-boilerplate:latest
+          docker push ${{ secrets.AWS_ECR_IMAGE }}
       - name: Deploy to Fargate API
         run: |
-          aws ecs update-service --cluster clr-web-api --service fg-srv-web-api --force-new-deployment
+          aws ecs update-service --cluster ${{ secrets.AWS_FG_CLUSTER }} --service ${{ secrets.AWS_FG_SERVICE }} --force-new-deployment
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: us-east-1
+          AWS_REGION: ${{ secrets.AWS_REGION }}
