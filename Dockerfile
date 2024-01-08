@@ -5,5 +5,5 @@ RUN go mod download -x
 RUN go build main.go &&  \
     mv main /go/bin/app && \
     rm -Rf /go/src
-EXPOSE 8080
+EXPOSE 80
 ENTRYPOINT /go/bin/app

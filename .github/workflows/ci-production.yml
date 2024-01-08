@@ -1,9 +1,9 @@
 name: GitHub Api Boilerplate (Production)
 run-name: GO API Boilerplate (Production)
-on:
-  push:
-    branches:
-      - main
+on: [push]
+  #push:
+    #branches:
+     # - main
 jobs:
   ci-production:
     runs-on: ubuntu-latest
@@ -29,3 +29,10 @@ jobs:
       - name: Push Docker image to AWS ECR
         run: |
           docker push 220361521127.dkr.ecr.us-east-1.amazonaws.com/go-api-boilerplate:latest
+      - name: Deploy to Fargate
+        run: |
+          aws ecs update-service --cluster fg-api-boilerplate --fg-srv-api-boilerplate --force-new-deployment
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: us-east-1
