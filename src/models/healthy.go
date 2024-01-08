@@ -6,6 +6,7 @@ import (
 )
 
 type Healthy struct {
+	APP    string    `json:"app"`
 	Date   time.Time `json:"date"`
 	Domain string    `json:"domain"`
 }
@@ -13,6 +14,7 @@ type Healthy struct {
 func NewHealthy() *Healthy {
 	cfg := config.GetConfig()
 	return &Healthy{
+		APP:    "Api boilerplate",
 		Date:   time.Now(),
 		Domain: cfg.GetDomain(),
 	}
