@@ -8,7 +8,7 @@ import (
 
 func main() {
 	app := handlers.Handler()
-	cfg := "80" //config.GetConfig()
+	cfg := "8000" //config.GetConfig()
 	err := app.Listen(fmt.Sprintf(":%s", cfg))
 	if err != nil {
 		log.Panicf("Error:%s", err.Error())
