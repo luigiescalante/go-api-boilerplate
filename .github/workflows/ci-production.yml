@@ -29,7 +29,7 @@ jobs:
       - name: Push Docker image to AWS ECR
         run: |
           docker push 220361521127.dkr.ecr.us-east-1.amazonaws.com/go-api-boilerplate:latest
-      - name: Deploy to Fargate
+      - name: Deploy to Fargate API
         run: |
           aws ecs update-service --cluster ApiCluster --service fg-srv-api-boilerplate --force-new-deployment
         env:
