@@ -31,7 +31,7 @@ jobs:
           docker push 220361521127.dkr.ecr.us-east-1.amazonaws.com/go-api-boilerplate:latest
       - name: Deploy to Fargate API
         run: |
-          aws ecs update-service --cluster ApiCluster --service fg-srv-api-boilerplate --force-new-deployment
+          aws ecs update-service --cluster clr-web-api --service fg-srv-web-api --force-new-deployment
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
