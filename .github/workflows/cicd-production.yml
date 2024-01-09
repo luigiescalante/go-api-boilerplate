@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    tags:
+      - 'v*' # Trigger on any tag that starts with 'v'
 jobs:
   ci-production:
     runs-on: ubuntu-latest
